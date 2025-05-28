@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image_editor/image_editor.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
@@ -15,12 +17,13 @@ import '../common/portrait_mode_mixin.dart';
 class ImageEdit extends StatefulWidget {
   /// Default constructor for the image editing widget.
   const ImageEdit(
-      {super.key,
+      {final Key? key,
       required this.file,
       required this.title,
       this.configs,
       this.maxWidth = 1080,
-      this.maxHeight = 1920});
+      this.maxHeight = 1920})
+      : super(key: key);
 
   @override
   _ImageEditState createState() => _ImageEditState();
@@ -83,12 +86,12 @@ class _ImageEditState extends State<ImageEdit>
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
-    final Color appBarBackgroundColor = _configs.appBarBackgroundColor ??
+    final Color _appBarBackgroundColor = _configs.appBarBackgroundColor ??
         appBarTheme.backgroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.surface
             : colorScheme.primary);
-    final Color appBarTextColor = _configs.appBarTextColor ??
+    final Color _appBarTextColor = _configs.appBarTextColor ??
         appBarTheme.foregroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.onSurface
@@ -98,8 +101,8 @@ class _ImageEditState extends State<ImageEdit>
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: appBarBackgroundColor,
-        foregroundColor: appBarTextColor,
+        backgroundColor: _appBarBackgroundColor,
+        foregroundColor: _appBarTextColor,
         actions: <Widget>[_buildDoneButton(context)],
       ),
       body: Column(
@@ -128,8 +131,8 @@ class _ImageEditState extends State<ImageEdit>
                   _controlExpanded = false;
                 });
               },
-              child: const Row(
-                  children: [Spacer(), Icon(Icons.keyboard_arrow_down)]),
+              child: Row(
+                  children: const [Spacer(), Icon(Icons.keyboard_arrow_down)]),
             ),
             const Divider(),
             _buildContrastAdjustControl(context),

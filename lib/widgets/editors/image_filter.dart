@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -18,12 +19,13 @@ import '../common/portrait_mode_mixin.dart';
 class ImageFilter extends StatefulWidget {
   /// Default constructor for the image filter widget.
   const ImageFilter(
-      {super.key,
+      {Key? key,
       required this.title,
       required this.file,
       this.configs,
       this.maxWidth = 1280,
-      this.maxHeight = 720});
+      this.maxHeight = 720})
+      : super(key: key);
 
   /// Input file object.
   final File file;
@@ -127,12 +129,12 @@ class _ImageFilterState extends State<ImageFilter>
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
-    final Color appBarBackgroundColor = _configs.appBarBackgroundColor ??
+    final Color _appBarBackgroundColor = _configs.appBarBackgroundColor ??
         appBarTheme.backgroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.surface
             : colorScheme.primary);
-    final Color appBarTextColor = _configs.appBarTextColor ??
+    final Color _appBarTextColor = _configs.appBarTextColor ??
         appBarTheme.foregroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.onSurface
@@ -142,8 +144,8 @@ class _ImageFilterState extends State<ImageFilter>
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: appBarBackgroundColor,
-        foregroundColor: appBarTextColor,
+        backgroundColor: _appBarBackgroundColor,
+        foregroundColor: _appBarTextColor,
         actions: <Widget>[
           if (_loading)
             Container()

@@ -1,6 +1,6 @@
 # example
 
-Example for advance_image_picker_plus
+Example for advance_image_picker
 
 ## Getting Started
 

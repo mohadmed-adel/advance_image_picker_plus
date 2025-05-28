@@ -1,9 +1,10 @@
 import 'dart:core';
 
-import 'package:advance_image_picker_plus/models/image_object.dart';
-import 'package:advance_image_picker_plus/widgets/editors/editor_params.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import '../models/image_object.dart';
+import '../widgets/editors/editor_params.dart';
 
 export 'package:camera/camera.dart' show FlashMode;
 

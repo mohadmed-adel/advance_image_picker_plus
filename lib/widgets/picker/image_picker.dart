@@ -42,11 +42,12 @@ const int kBottomControlPanelHeight = 265;
 class ImagePicker extends StatefulWidget {
   /// Default constructor for the photo and media image picker.
   const ImagePicker(
-      {super.key,
+      {final Key? key,
       this.maxCount = 10,
       this.isFullscreenImage = false,
       this.isCaptureFirst = true,
-      this.configs});
+      this.configs})
+      : super(key: key);
 
   /// Max selecting count
   final int maxCount;
@@ -458,18 +459,18 @@ class _ImagePickerState extends State<ImagePicker>
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
-    final Color appBarBackgroundColor = _configs.appBarBackgroundColor ??
+    final Color _appBarBackgroundColor = _configs.appBarBackgroundColor ??
         appBarTheme.backgroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.surface
             : colorScheme.primary);
-    final Color appBarTextColor = _configs.appBarTextColor ??
+    final Color _appBarTextColor = _configs.appBarTextColor ??
         appBarTheme.foregroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.onSurface
             : colorScheme.onPrimary);
-    final Color appBarDoneButtonColor =
-        _configs.appBarDoneButtonColor ?? appBarBackgroundColor;
+    final Color _appBarDoneButtonColor =
+        _configs.appBarDoneButtonColor ?? _appBarBackgroundColor;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -479,14 +480,14 @@ class _ImagePickerState extends State<ImagePicker>
           appBar: AppBar(
             title: _buildAppBarTitle(
               context,
-              appBarBackgroundColor,
-              appBarTextColor,
+              _appBarBackgroundColor,
+              _appBarTextColor,
             ),
-            backgroundColor: appBarBackgroundColor,
-            foregroundColor: appBarTextColor,
+            backgroundColor: _appBarBackgroundColor,
+            foregroundColor: _appBarTextColor,
             centerTitle: false,
             actions: <Widget>[
-              _buildDoneButton(context, appBarDoneButtonColor),
+              _buildDoneButton(context, _appBarDoneButtonColor),
             ],
           ),
           body: SafeArea(child: _buildBodyView(context))),
@@ -732,7 +733,7 @@ class _ImagePickerState extends State<ImagePicker>
   Widget _buildBottomPanel(BuildContext context) {
     // Add leading text and colon+blank, only if 'textSelectedImagesTitle' is
     // not blank in a none breaking way to previous version.
-    final String textSelectedImagesTitle =
+    final String _textSelectedImagesTitle =
         _configs.textSelectedImagesTitle == ''
             ? _configs.textSelectedImagesTitle
             : '${_configs.textSelectedImagesTitle}: ';
@@ -744,7 +745,7 @@ class _ImagePickerState extends State<ImagePicker>
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         if (widget.maxCount > 1) ...[
           Text(
-              '$textSelectedImagesTitle'
+              '$_textSelectedImagesTitle'
               '${_selectedImages.length}'
               ' / ${widget.maxCount}',
               style: const TextStyle(color: Colors.white, fontSize: 14)),
@@ -1052,13 +1053,13 @@ class _ImagePickerState extends State<ImagePicker>
         oldIndex < 0 ||
         newIndex < 0) return false;
 
-    int newIndex0 = newIndex;
+    int _newIndex = newIndex;
     setState(() {
-      if (newIndex0 > oldIndex) {
-        newIndex0 -= 1;
+      if (_newIndex > oldIndex) {
+        _newIndex -= 1;
       }
       final items = _selectedImages.removeAt(oldIndex);
-      _selectedImages.insert(newIndex0, items);
+      _selectedImages.insert(_newIndex, items);
       return;
     });
     return null;
@@ -1081,7 +1082,7 @@ class _ImagePickerState extends State<ImagePicker>
     }
 
     /// Remove image in the list at index.
-    void removeImage(final int index) {
+    void _removeImage(final int index) {
       setState(() {
         _selectedImages.removeAt(index);
       });
@@ -1135,7 +1136,7 @@ class _ImagePickerState extends State<ImagePicker>
                             child: Text(_configs.textYes),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              removeImage(index);
+                              _removeImage(index);
                             },
                           ),
                         ],
@@ -1143,7 +1144,7 @@ class _ImagePickerState extends State<ImagePicker>
                     },
                   );
                 } else {
-                  removeImage(index);
+                  _removeImage(index);
                 }
               }),
         )

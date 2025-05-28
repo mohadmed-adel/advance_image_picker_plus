@@ -8,7 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-import '/configs/image_picker_configs.dart';
+import '../../configs/image_picker_configs.dart';
 import '../../models/image_object.dart';
 import '../../utils/image_utils.dart';
 import '../common/portrait_mode_mixin.dart';
@@ -21,13 +21,14 @@ import '../editors/image_sticker.dart';
 class ImageViewer extends StatefulWidget {
   /// Default constructor for image viewer for selected images.
   ImageViewer(
-      {super.key,
+      {final Key? key,
       this.initialIndex = 0,
       this.title,
       this.images,
       this.configs,
       this.onChanged})
-      : pageController = PageController(initialPage: initialIndex);
+      : pageController = PageController(initialPage: initialIndex),
+        super(key: key);
 
   /// Initial index in image list.
   final int initialIndex;
@@ -239,12 +240,12 @@ class _ImageViewerState extends State<ImageViewer>
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
-    final Color appBarBackgroundColor = _configs.appBarBackgroundColor ??
+    final Color _appBarBackgroundColor = _configs.appBarBackgroundColor ??
         appBarTheme.backgroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.surface
             : colorScheme.primary);
-    final Color appBarTextColor = _configs.appBarTextColor ??
+    final Color _appBarTextColor = _configs.appBarTextColor ??
         appBarTheme.foregroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.onSurface
@@ -255,8 +256,8 @@ class _ImageViewerState extends State<ImageViewer>
         appBar: AppBar(
             title: Text("${widget.title} (${_currentIndex! + 1} "
                 "/ ${_images.length})"),
-            backgroundColor: appBarBackgroundColor,
-            foregroundColor: appBarTextColor,
+            backgroundColor: _appBarBackgroundColor,
+            foregroundColor: _appBarTextColor,
             actions: [
               GestureDetector(
                 onTap: hasImages
@@ -314,8 +315,8 @@ class _ImageViewerState extends State<ImageViewer>
                   _buildReorderableSelectedImageList(context),
                   _buildEditorControls(
                     context,
-                    appBarBackgroundColor,
-                    appBarTextColor,
+                    _appBarBackgroundColor,
+                    _appBarTextColor,
                   ),
                 ])
               : Center(
@@ -371,13 +372,13 @@ class _ImageViewerState extends State<ImageViewer>
   /// Reorder selected image list.
   bool? _reorderSelectedImageList(int oldIndex, int newIndex) {
     if (oldIndex < 0 || newIndex < 0) return false;
-    int newIndex0 = newIndex;
+    int _newIndex = newIndex;
     setState(() {
-      if (newIndex0 > oldIndex) {
-        newIndex0 -= 1;
+      if (_newIndex > oldIndex) {
+        _newIndex -= 1;
       }
       final items = _images.removeAt(oldIndex);
-      _images.insert(newIndex0, items);
+      _images.insert(_newIndex, items);
       widget.onChanged?.call(_images);
       return;
     });
@@ -443,7 +444,7 @@ class _ImageViewerState extends State<ImageViewer>
   Widget _buildCurrentImageInfoView(BuildContext context) {
     final image = _images[_currentIndex!];
 
-    Future<ImageObject>? getImageInfos(ImageObject image) async {
+    Future<ImageObject>? _getImageInfos(ImageObject image) async {
       // Get image resolution
       final retImg = await ImageUtils.getImageInfo(image);
 
@@ -464,7 +465,7 @@ class _ImageViewerState extends State<ImageViewer>
     }
 
     return FutureBuilder<ImageObject>(
-        future: getImageInfos(image),
+        future: _getImageInfos(image),
         builder: (BuildContext context, AsyncSnapshot<ImageObject> snapshot) {
           if (snapshot.hasData) {
             final image = snapshot.data!;

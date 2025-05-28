@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:advance_image_picker_plus/advance_image_picker_plus.dart';
+import 'package:advance_image_picker/advance_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,8 +18,8 @@ void main() {
 /// Example app.
 class MyApp extends StatelessWidget {
   /// Example app constructor.
-  const MyApp({super.key});
-  // This widget is the root of your application.
+  const MyApp({final Key? key}) : super(key: key);
+  // This widget is the root of your application. 
   @override
   Widget build(BuildContext context) {
     // Setup image picker configs
@@ -122,7 +122,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 

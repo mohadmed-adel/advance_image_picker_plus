@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -18,12 +19,13 @@ class ImageSticker extends StatefulWidget {
   /// Default constructor for ImageSticker, used to add image based sticker
   /// icons on library images and photos.
   const ImageSticker(
-      {super.key,
+      {final Key? key,
       required this.file,
       required this.title,
       this.configs,
       this.maxWidth = 1080,
-      this.maxHeight = 1920});
+      this.maxHeight = 1920})
+      : super(key: key);
 
   /// Input file object.
   final File file;
@@ -69,7 +71,7 @@ class _ImageStickerState extends State<ImageSticker>
     _stickerList = List<int>.generate(34, (index) => index + 1)
         .map((e) => Image.asset(
               'assets/icon/$e.png',
-              package: 'advance_image_picker_plus',
+              package: 'advance_image_picker',
             ))
         .toList();
 
@@ -101,12 +103,12 @@ class _ImageStickerState extends State<ImageSticker>
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final AppBarTheme appBarTheme = AppBarTheme.of(context);
-    final Color appBarBackgroundColor = _configs.appBarBackgroundColor ??
+    final Color _appBarBackgroundColor = _configs.appBarBackgroundColor ??
         appBarTheme.backgroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.surface
             : colorScheme.primary);
-    final Color appBarTextColor = _configs.appBarTextColor ??
+    final Color _appBarTextColor = _configs.appBarTextColor ??
         appBarTheme.foregroundColor ??
         (colorScheme.brightness == Brightness.dark
             ? colorScheme.onSurface
@@ -116,8 +118,8 @@ class _ImageStickerState extends State<ImageSticker>
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: appBarBackgroundColor,
-        foregroundColor: appBarTextColor,
+        backgroundColor: _appBarBackgroundColor,
+        foregroundColor: _appBarTextColor,
         actions: <Widget>[_buildDoneButton(context)],
       ),
       body: Stack(fit: StackFit.passthrough, children: [
@@ -353,14 +355,15 @@ class _ImageStickerState extends State<ImageSticker>
 class StickerView extends StatefulWidget {
   /// Default constructor for the StickerView.
   StickerView(this.image,
-      {super.key,
+      {Key? key,
       required this.width,
       required this.height,
       this.top = 0.0,
       this.left = 0.0,
       this.currentScale = 1.0,
       this.isFocus = false,
-      this.onTapRemove});
+      this.onTapRemove})
+      : super(key: key);
 
   /// The sticker image.
   final Image image;
