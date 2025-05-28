@@ -144,9 +144,11 @@ packages:
   flutter_native_image:
     dependency: transitive
     description:
-      path: "../flutter_native_image"
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: fd58fdef7bfc6434383cee0b26c6f5fff7dc28b1
+      url: "https://github.com/yutae/flutter_native_image.git"
+    source: git
     version: "0.0.6+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
